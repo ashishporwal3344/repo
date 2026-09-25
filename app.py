@@ -875,13 +875,15 @@ demo.queue()
 
 
 if __name__ == "__main__":
-    # IMPORTANT CHANGE FROM THE ORIGINAL SCRIPT:
+    # IMPORTANT NOTES:
     #
-    # 1. No more `share=True`. On a real hosting platform (Render,
-    #    Railway, etc.) the platform itself gives you a public URL, so
-    #    Gradio's own temporary tunnel is not needed (and Render blocks
-    #    the outbound connection it needs anyway). share=True is only
-    #    useful when running locally/in Colab.
+    # 1. share=True IS needed here even though Render already gives a
+    #    public URL. On startup, Gradio pings its own 127.0.0.1 address
+    #    to confirm the server is reachable; inside Render's container
+    #    that self-ping fails, and Gradio refuses to start unless
+    #    share=True is set (it then also opens a gradio.live tunnel,
+    #    which is harmless extra - just use your onrender.com URL, not
+    #    the gradio.live one, since the onrender.com one is permanent).
     #
     # 2. server_name="0.0.0.0" - binds to all network interfaces so the
     #    hosting platform's reverse proxy can reach the app. Binding to
@@ -900,4 +902,5 @@ if __name__ == "__main__":
         server_port=int(os.environ.get("PORT", 7860)),
         allowed_paths=[WORKDIR],
         show_api=False,
+        share=True,
     )
