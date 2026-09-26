@@ -871,7 +871,7 @@ with gr.Blocks(title="Bulk PDF Link & Image Replacer") as demo:
         outputs=[log_box, output_zip],
     )
 
-demo.queue()
+demo.queue(api_open=False)
 
 
 if __name__ == "__main__":
